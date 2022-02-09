@@ -3,22 +3,23 @@
  * 1. Por qué el this.ball debe ser nulo al principio?
  * 2. Los constructores de un objeto creado pueden quedar en blanco después de ser creados?
  * 3. Por qué las instancias de los objetos se ponen fuera de la función main?
- * 4. 
+ * 4. Por qué es util la POO cuando se crean funciones con este método?
+ * 5. 
  */
 
 (function(){
 	self.Board = function(width, height){
 		this.width = width;
 		this.height = height;
-		this.playing = false;
 		this.game_over = false;
 		this.bars = [];
         this.ball = null;
+        this.playing = false;
 	}
 
 	self.Board.prototype = {
 		get elements(){
-			var elements = this.bars;
+			var elements = this.bars.map(function(bar){return bar;});
 			elements.push(this.ball);
 			return elements;
 
@@ -37,7 +38,18 @@
 		this.speed_y=0;
 		board.ball = this;
 		this.kind = "circle";
+
+        this.direction = 1;
 	}
+
+    self.Ball.prototype ={
+		move: function(){
+			this.x += (this.speed_x * this.direction);
+			this.y += (this.speed_y);
+
+		}
+	}
+
 })();
 
 
@@ -91,9 +103,11 @@
 		},
 
         play: function(){
-			
-            this.clean();
-			this.draw();
+			if (this.board.playing){
+				this.clean();
+				this.draw();
+				this.board.ball.move();
+			}
 		}
 	}
 
@@ -126,28 +140,40 @@ var ball = new Ball(350,100,10,board);
 
 document.addEventListener("keydown", function(ev) {
 	//console.log(ev.keyCode);
-	ev.preventDefault();
+	//ev.preventDefault();
 	if(ev.keyCode == 38){
+		ev.preventDefault();
 		// tecla flecha arriba:
 		bar.up();
 	}
 	else if(ev.keyCode == 40){
+		ev.preventDefault();
 		// tecla flecha abajo:
 		bar.down();
 	}
 	else if(ev.keyCode == 87){
+		ev.preventDefault();
 		// tecla W:
 		bar_2.up();
 	}
 	else if(ev.keyCode == 83){
+		ev.preventDefault();
 		// tecla S:
 		bar_2.down();
+	}
+	else if(ev.keyCode == 32){
+		// barra espaciadora:
+		ev.preventDefault();
+		board.playing = !board.playing;
 	}
 	//console.log(bar.toString());
 	//console.log(""+bar_2);
 });
 
 //self.addEventListener("load", main);
+
+// sólo para ver todos los elementos por primera vez:
+board_view.draw();
 
 window.requestAnimationFrame(controller);
 
