@@ -5,7 +5,7 @@
  * 3. Por qué las instancias de los objetos se ponen fuera de la función main?
  * 4. Por qué es util la POO cuando se crean funciones con este método?
  * 5. Que tan útiles son los prototypes para los objetos que se crean?
- * 6. 
+ * 6. Cómo funcionan los getters y los setters?
  */
 
 (function(){
